@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="index_files/github-markdown.min.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Ollama</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: dimgray;
+            margin: 20px;
+        }
+        .chat-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 800px;
+            height: 520px;
+            overflow-y: scroll;
+        }
+        .message {
+            margin-bottom: 5px;
+        }
+        .user-message {
+            background-color: #f1f1f1;
+        }
+        .bot-response {
+            background-color: #d1e8ff;
+        }
+        .markdown-body { padding: 30px; }
+    </style>
+</head>
+<body>
+
+<h1>Chat with Ollama</h1>
+
+<div class="chat-box" id="chatBox" width="1200px">
+    {% if user_message %}
+        <div class="message user-message">{{ user_message }}</div>
+    {% endif %}
+    {% if bot_response %}
+        <div class="message bot-response">{{ bot_response|safe }}</div>
+
+    {% endif %}
+</div>
+<!--<form method="POST" action="/image_upload" onsubmit="return uploadFile();">-->
+<!--    <h1>Upload File</h1>-->
+<!--    <input type="file" id="fileInput" name='file_upload' accept="text/markdown,csv,application/pdf/*">-->
+<!--    <button onclick="uploadFile()">Upload</button>-->
+<!--</form>-->
+
+<form method="POST" action="/submit" onsubmit="return sendMessage();">
+    <input type="text" id="userInput" name="user_input" placeholder="Type a message..." required="" style="width:810px;height:80px">
+    <button type="submit">Send</button>
+</form>
+
+
+
+<script>
+function sendMessage() {
+    var userInput = document.getElementById('userInput').value;
+
+    // Clear the input field
+    //document.getElementById('userInput').value = '';
+
+    // Add user message to chat box
+    var chatBox = document.getElementById('chatBox');
+    var userMessageDiv = document.createElement('div');
+    userMessageDiv.className = 'message user-message';
+    userMessageDiv.textContent += userInput;
+    chatBox.appendChild(userMessageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to bottom
+
+    return true;
+}
+
+    function uploadFile() {
+      const fileInput = document.getElementById("fileInput");
+
+      if (fileInput.files.length === 0) {
+        alert("No file selected.");
+        return;
+      }
+
+      const file = fileInput.files[0];
+
+      if (file) {
+        try {
+          // const reader = new FileReader();
+          //
+          // reader.readAsArrayBuffer(file);  // Use ArrayBuffer for compatibility
+          //
+          // // You can now work with the file data (e.g., display it)
+          // console.log("File data:", file);
+          // // Add user message to chat box
+          // var chatBox = document.getElementById('chatBox');
+          // var userMessageDiv = document.createElement('div');
+          // userMessageDiv.className = 'message user-message';
+          // userMessageDiv.textContent = file;
+          // chatBox.appendChild(userMessageDiv);
+          // chatBox.scrollTop = chatBox.scrollHeight; // Scroll to bottom
+            // make a local copy
+        //     const original = fileInput.files[0];
+        //     // no file received, exit
+        // if (!original) return;
+
+        // create our clone
+        // const clone = new File([original], original.name, {
+        //     type: original.type,
+        //     lastModified: original.lastModified,
+        // });
+        // const fileStream = new fileHandle.createWritable();
+        // fileStream.write(clone, {type: "text/plain"});
+        // fileStream.close();
+        return file;
+        } catch (error) {
+          console.error("Error reading file:", error);
+          alert("Error uploading file: " + error);
+        }
+      } else {
+        alert("Please select a file.");
+      }
+    }
+
+</script>
+
+
+</body></html>
