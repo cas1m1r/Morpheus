@@ -28,9 +28,50 @@
             background-color: #d1e8ff;
         }
         .markdown-body { padding: 30px; }
+        .dashboard-bar {
+          display: flex;
+          background-color: #f0f0f0;
+          padding: 10px;
+          border: 1px solid #ccc;
+          margin-bottom: 10px;
+        }
+
+        .bar-item {
+          flex: 1;
+          background-color: #ddd;
+          border: 1px solid #eee;
+          padding: 5px 10px;
+          cursor: pointer;
+          border-radius: 5px;
+        }
+
+        .bar-item:hover {
+          background-color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
+
+  <div class="dashboard-bar">
+    <div class="bar-item" onclick="goToPage('http://127.0.0.1:5000/models')">
+      List Models
+    </div>
+    <div class="bar-item" onclick="goToPage('http://127.0.0.1:5000/get-model')">
+      Download Model
+    </div>
+    <div class="bar-item" onclick="goToPage('http://127.0.0.1:5000/delete-model')">
+      Delete Model
+    </div>
+    <div class="bar-item" onclick="goToPage('http://127.0.0.1:5000/switch-model')">
+      Switch Models
+    </div>
+  </div>
+
+  <script>
+    function goToPage(url) {
+      window.location.href = url;
+    }
+  </script>
 
 <h1>Chat with Ollama</h1>
 
