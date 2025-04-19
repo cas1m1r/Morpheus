@@ -14,12 +14,15 @@ logfile = f'conversation_{now.month}-{now.day}-{now.year}-{now.hour}.md'
 load_dotenv()
 api_url = os.environ['URL']
 
+model = "gemma3:4b"
+
 
 # Function to call Ollama API (example function)
 def call_ollama_api(text, api_url):
+    global model
     # Set up the headers and data for the request
     headers = {'Content-Type': 'application/json',}
-    data = {"model": "gemma3:4b", "messages": [{"role": "user", "content": text}]}
+    data = {"model": model, "messages": [{"role": "user", "content": text}]}
     # make the request
     try:
         response = requests.post(api_url, json=data, headers=headers)
@@ -33,10 +36,10 @@ def call_ollama_api(text, api_url):
         return "API Error"
 
 
-def send_ollama_image(data):
+def send_ollama_image(data,model):
     # Set up the headers and data for the request
     headers = {'Content-Type': 'application/json', }
-    data = {"model": "gemma3:4b",
+    data = {"model": model,
       "prompt":"Please caption this image",
       "images":data}
     # make the request
@@ -54,10 +57,11 @@ def send_ollama_image(data):
 
 @app.route("/submit", methods=["POST"])
 def submit():
+    global model
     tstamp1 = time.ctime()
     user_message = request.form.get('user_input')
     client = setup_client(api_url)
-    bot_response = ask_model(client,'gemma3:4b',user_message)
+    bot_response = ask_model(client,model,user_message)
     msg_md = markdown.markdown(bot_response['message']['content'])
     tstamp2 = time.ctime()
     reply_content = f' [{tstamp2}] **Response:**\n```html\n<html>{msg_md}\n</html>```'
@@ -93,6 +97,22 @@ def display_models():
 # TODO: make get-model method (download new models)
 # TODO: make delete model method
 # TODO: make switch model method (one being used for chat)
+@app.route('/switch-model', methods=['GET'])
+def change_model():
+    client = setup_client(api_url)
+    models = list_models(client)
+    return render_template('switch_model.html', models=models)
+
+
+@app.route('/change-model/<new_model>', methods=['GET'])
+def toggle_model_name(new_model):
+    global model
+    model = new_model
+    user_message = None
+    bot_response = None
+    return render_template('index.html', user_message=user_message, bot_response=bot_response)
+
+
 # TODO: Fix Image Upload functionality
 
 
