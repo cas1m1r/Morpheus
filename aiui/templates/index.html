@@ -93,10 +93,18 @@
 <form method="POST" action="/submit" onsubmit="return sendMessage();">
     <input type="text" id="userInput" name="user_input" placeholder="Type a message..." required="" style="width:810px;height:80px">
     <button type="submit">Send</button>
+
 </form>
+<!-- The upload button with a label -->
+<!--<form>-->
+<!--    <label for="image-upload" class="button">-->
+<!--        Upload Image-->
+<!--    </label>-->
 
+<!--    &lt;!&ndash; The file input element, which is hidden from the user &ndash;&gt;-->
+<!--    <input type="file" id="image-upload" name="image" accept="image/*">-->
 
-
+<!--</form>-->
 <script>
 function sendMessage() {
     var userInput = document.getElementById('userInput').value;

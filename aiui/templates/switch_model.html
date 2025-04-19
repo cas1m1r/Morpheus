@@ -1,0 +1,14 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Change LLM Model</title>
+</head>
+
+<h1> Models Available </h1>
+<table>
+{% for model in models %}
+    <tr><td> {{model}} <a href='/change-model/{{model}}'> Click to Switch</a></td></tr>
+{% endfor %}
+</table>
+
+</html>
